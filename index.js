@@ -1,3 +1,3 @@
-import fileDiff from './src/fileDiffJson.js';
+import fileDiff from './src/fileDiff.js';
 
 export default fileDiff;
