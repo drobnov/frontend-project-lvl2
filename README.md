@@ -10,3 +10,6 @@ This repository contains the second educational project * "Difference calculator
 
 ### An example of the consular utility "gendiff". Calculate the difference between format files ".yml".
 <a href="https://asciinema.org/a/4tLzGFWFG3wZcKwb5uUk0bspR" target="_blank"><img src="https://asciinema.org/a/4tLzGFWFG3wZcKwb5uUk0bspR.svg" /></a>
+
+### An example of the r utility "gendiff". Calculate the difference between ".json" and ".yml" file formats which are recursive structure.
+<a href="https://asciinema.org/a/Ar4hG1rikKKfRuzD9qPDWCH9m" target="_blank"><img src="https://asciinema.org/a/Ar4hG1rikKKfRuzD9qPDWCH9m.svg" /></a>
