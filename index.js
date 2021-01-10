@@ -1,3 +1,3 @@
-import { fileDiff, stylish } from './src/fileDiff.js';
+import fileDiff from './src/fileDiff.js';
 
-export { fileDiff, stylish };
+export default fileDiff;
