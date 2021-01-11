@@ -23,7 +23,7 @@ Utility features:
   ### format plain
 > ` $ gendiff --format plain filepath1.yml filepath2.yml`
 
-  ### format stylish
+  ### format json
 > ` $ gendiff --format json filepath1.json filepath2.json`
 
 ### An example of the consular utility "gendiff". Calculate the difference between format files ".json".
