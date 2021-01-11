@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const plainStructure = (diff) => {
+export const plainStructure = (diff) => {
   let result = [];
 
   const iter = (diffObject, path) => {
@@ -11,14 +11,14 @@ const plainStructure = (diff) => {
         result = [...result];
       } else if (sort === 'no' && type !== null) {
         result = [...result, {
-          key, value, type, path,
+          key, value, type, path: [...path, key].join('.'),
         }];
       } else if (type !== null && sort !== 'no') {
         const diffAddDel = diffObject.filter((a) => a.key === key);
         const added = _.find(diffAddDel, { type: 'add' });
         const removed = _.find(diffAddDel, { type: 'delete' });
         result = [...result, {
-          key, value: { froms: removed.value, to: added.value }, type: 'updated', path,
+          key, value: { delete: removed.value, add: added.value }, type: 'updated', path: [...path, key].join('.'),
         }];
       } else {
         iter(value, [...path, key]);
@@ -27,13 +27,6 @@ const plainStructure = (diff) => {
     return result;
   };
   return _.uniqBy(iter(diff, []), 'key');
-};
-
-const constructionPath = (key, path) => {
-  if (path.length === 0) {
-    return `'${key}'`;
-  }
-  return `'${path.join('.')}.${key}'`;
 };
 
 const constructionValue = (value) => {
@@ -48,16 +41,16 @@ const constructionValue = (value) => {
 const buildString = (structure) => {
   const result = [];
   structure.forEach(({
-    key, value, type, path,
+    value, type, path,
   }) => {
     if (type === 'delete') {
-      const str = `Property ${constructionPath(key, path)} was removed`;
+      const str = `Property '${path}' was removed`;
       result.push(str);
     } else if (type === 'add') {
-      const str = `Property ${constructionPath(key, path)} was added with value: ${constructionValue(value)}`;
+      const str = `Property '${path}' was added with value: ${constructionValue(value)}`;
       result.push(str);
     } else if (type === 'updated') {
-      const str = `Property ${constructionPath(key, path)} was updated. From ${constructionValue(value.froms)} to ${constructionValue(value.to)}`;
+      const str = `Property '${path}' was updated. From ${constructionValue(value.delete)} to ${constructionValue(value.add)}`;
       result.push(str);
     }
   });
