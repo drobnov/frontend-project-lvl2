@@ -17,13 +17,13 @@ Utility features:
 
 ## Usage example:
 
-  # format stylish
+  ### format stylish
 > ` $ gendiff filepath1.json filepath2.json`
 
-  # format plain
+  ### format plain
 > ` $ gendiff --format plain filepath1.yml filepath2.yml`
 
-  # format stylish
+  ### format stylish
 > ` $ gendiff --format json filepath1.json filepath2.json`
 
 ### An example of the consular utility "gendiff". Calculate the difference between format files ".json".
