@@ -39,4 +39,4 @@ Utility features:
 <a href="https://asciinema.org/a/U5xbJ7cRtbe3VXnSCihNm0ANr" target="_blank"><img src="https://asciinema.org/a/U5xbJ7cRtbe3VXnSCihNm0ANr.svg" /></a>
 
 ### An example of the utility "gendiff". Calculate the difference between ".json" and ".yml" file formats which are recursive structure. The data is displayed in the format "json".
-<a href="https://asciinema.org/a/Ma0UHCSSdY2ZnzVxYwxkgV5EG" target="_blank"><img src="https://asciinema.org/a/Ma0UHCSSdY2ZnzVxYwxkgV5EG.svg" /></a>
+<a href="https://asciinema.org/a/2KdeyKlHf5wkycoBR06VQQuTr" target="_blank"><img src="https://asciinema.org/a/2KdeyKlHf5wkycoBR06VQQuTr.svg" /></a>
