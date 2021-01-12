@@ -12,18 +12,18 @@ const sortCb = (a, b) => {
   return 0;
 };
 
-const dephElement = (data, deph, type, sort) => {
+const dephElement = (data, deph) => {
   if (!_.isPlainObject(data)) {
     return data;
   }
-  let result = [];
+  let a = [];
   const keys = Object.keys(data);
   keys.forEach((key) => {
-    result = [...result, {
-      key, value: dephElement(data[key], deph + 1, type, sort), deph: deph + 1, type, sort,
+    a = [...a, {
+      key, value: dephElement(data[key], deph + 1), deph: deph + 1, type: null,
     }];
   });
-  return result;
+  return a;
 };
 
 const fileDiff = (filePath1, filePath2) => {
@@ -40,7 +40,7 @@ const fileDiff = (filePath1, filePath2) => {
     const keysAdd = [...keys2].filter((key) => !keys1.includes(key));
     keysAdd.forEach((key) => {
       result = [...result, {
-        key, value: dephElement(objectFile2[key], deph, 'add', 'no analyze'), type: 'add', deph, sort: 'no',
+        key, value: dephElement(objectFile2[key], deph), type: 'add', deph, sort: 'no',
       }];
       result.sort(sortCb);
     });
@@ -48,28 +48,28 @@ const fileDiff = (filePath1, filePath2) => {
     keys1.forEach((key) => {
       if (_.isEqual(objectFile1[key], objectFile2[key])) { // add the same data
         result = [...result, {
-          key, value: dephElement(objectFile1[key], deph, null, 'yes'), type: null, deph, sort: 'yes',
+          key, value: dephElement(objectFile1[key], deph), type: null, deph,
         }];
         result.sort(sortCb);
         // same keys, different data in the keys
       } else if (keys2.includes(key) && (typeof objectFile1[key] !== typeof objectFile2[key]
         || (!_.isPlainObject(objectFile1[key]) || !_.isPlainObject(objectFile2[key])))) {
         result = [...result, {
-          key, value: dephElement(objectFile1[key], deph, 'delete', 'no analyze'), type: 'delete', deph, sort: 'yes',
+          key, value: dephElement(objectFile1[key], deph), type: 'delete', deph,
         }];
         result = [...result, {
-          key, value: dephElement(objectFile2[key], deph, 'add', 'no analyze'), type: 'add', deph, sort: 'yes',
+          key, value: dephElement(objectFile2[key], deph), type: 'add', deph,
         }];
         result.sort(sortCb);
       } else if (!keys2.includes(key)) { // keys are not in the second file
         result = [...result, {
-          key, value: dephElement(objectFile1[key], deph, 'delete', 'no analyze'), type: 'delete', deph, sort: 'no',
+          key, value: dephElement(objectFile1[key], deph), type: 'delete', deph, sort: 'no',
         }];
         result.sort(sortCb);
         // identical keys are the data type that are the object
       } else if (keys2.includes(key) && _.isPlainObject(objectFile1[key])) {
         result = [...result, {
-          key, value: genDiffs(objectFile1[key], objectFile2[key], deph + 1), type: null, deph, sort: 'yes',
+          key, value: genDiffs(objectFile1[key], objectFile2[key], deph + 1), type: null, deph,
         }];
         result.sort(sortCb);
       }
