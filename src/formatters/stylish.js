@@ -23,7 +23,7 @@ const stylish = (diffs) => {
     });
     return str.join('\n');
   };
-  return `{\n${formater(diffs)}\n}\n`;
+  return `{\n${formater(diffs)}\n}`;
 };
 
 export default stylish;
