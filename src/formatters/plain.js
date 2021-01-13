@@ -26,7 +26,7 @@ export const plainStructure = (diff) => {
     });
     return result;
   };
-  return _.uniqBy(iter(diff, []), 'key');
+  return _.uniqBy(iter(diff, []), 'path');
 };
 
 const constructionValue = (value) => {
