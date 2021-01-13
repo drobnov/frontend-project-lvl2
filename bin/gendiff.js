@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander';
+import pkg from 'commander';
 import fileDiff from '../index.js';
 
+const { Command } = pkg;
 const program = new Command();
 
 program
