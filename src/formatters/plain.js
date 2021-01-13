@@ -54,7 +54,7 @@ const buildString = (structure) => {
       result.push(str);
     }
   });
-  return `${result.join('\n')}\n`;
+  return `${result.join('\n')}`;
 };
 
 const plain = (diff) => {
