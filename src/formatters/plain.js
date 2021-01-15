@@ -1,30 +1,27 @@
 import _ from 'lodash';
 
 export const plainStructure = (diff) => {
-  const result = { elements: [] };
-
   const iter = (diffObject, path) => {
-    diffObject.forEach(({
+    const result = diffObject.map(({
       key, value, type, sort,
     }) => {
       if (!Array.isArray(value) && type === null) {
-        result.elements = [...result.elements];
-      } else if (sort === 'no' && type !== null) {
-        result.elements = [...result.elements, {
+        return null;
+      } if (sort === 'no' && type !== null) {
+        return {
           key, value, type, path: [...path, key].join('.'),
-        }];
-      } else if (type !== null && sort !== 'no') {
+        };
+      } if (type !== null && sort !== 'no') {
         const diffAddDel = diffObject.filter((a) => a.key === key);
         const added = _.find(diffAddDel, { type: 'add' });
         const removed = _.find(diffAddDel, { type: 'delete' });
-        result.elements = [...result.elements, {
+        return {
           key, value: { delete: removed.value, add: added.value }, type: 'updated', path: [...path, key].join('.'),
-        }];
-      } else {
-        iter(value, [...path, key]);
+        };
       }
+      return iter(value, [...path, key]);
     });
-    return result.elements;
+    return _.compact(result.flat());
   };
   return _.uniqBy(iter(diff, []), 'path');
 };
@@ -39,22 +36,19 @@ const constructionValue = (value) => {
 };
 
 const buildString = (structure) => {
-  const result = { str: [] };
-  structure.forEach(({
+  const result = structure.map(({
     value, type, path,
   }) => {
     if (type === 'delete') {
-      const str = `Property '${path}' was removed`;
-      result.str = [...result.str, str];
-    } else if (type === 'add') {
-      const str = `Property '${path}' was added with value: ${constructionValue(value)}`;
-      result.str = [...result.str, str];
-    } else if (type === 'updated') {
-      const str = `Property '${path}' was updated. From ${constructionValue(value.delete)} to ${constructionValue(value.add)}`;
-      result.str = [...result.str, str];
+      return `Property '${path}' was removed`;
+    } if (type === 'add') {
+      return `Property '${path}' was added with value: ${constructionValue(value)}`;
+    } if (type === 'updated') {
+      return `Property '${path}' was updated. From ${constructionValue(value.delete)} to ${constructionValue(value.add)}`;
     }
+    return null;
   });
-  return `${result.str.join('\n')}`;
+  return `${result.join('\n')}`;
 };
 
 const plain = (diff) => {
