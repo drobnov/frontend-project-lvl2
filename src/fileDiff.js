@@ -13,6 +13,13 @@ const dephElement = (data, deph) => {
   return result;
 };
 
+const sort = (data1, data2) => {
+  const sortElements1 = _.sortBy(data1, (element) => element.key);
+  const sortElements2 = _.sortBy(data2, (element) => element.key);
+  const result = _.sortBy([...sortElements1, ...sortElements2], (element) => element.key);
+  return result;
+};
+
 const fileDiff = (filePath1, filePath2) => {
   const parseFile1 = parsers(filePath1);
   const parseFile2 = parsers(filePath2);
@@ -20,21 +27,18 @@ const fileDiff = (filePath1, filePath2) => {
   const genDiffs = (objectFile1, objectFile2, deph = 0) => {
     const keys1 = Object.keys(objectFile1);
     const keys2 = Object.keys(objectFile2);
-    // add keys that are not in the first file
     const keysAdd = [...keys2].filter((key) => !keys1.includes(key));
-    const elementsAdd = keysAdd.map((key) => ({
+    const elementsAdd = keysAdd.map((key) => ({ // add keys that are not in the first file
       key, value: dephElement(objectFile2[key], deph), type: 'add', deph, sort: 'no',
     }));
-
     const elementsDeleteRemove = keys1.map((key) => {
       if (_.isEqual(objectFile1[key], objectFile2[key])) { // add the same data
         return {
           key, value: dephElement(objectFile1[key], deph), type: null, deph,
         };
-        // same keys, different data in the keys
       } if (keys2.includes(key) && (typeof objectFile1[key] !== typeof objectFile2[key]
         || (!_.isPlainObject(objectFile1[key]) || !_.isPlainObject(objectFile2[key])))) {
-        return [{
+        return [{ // same keys, different data in the keys
           key, value: dephElement(objectFile1[key], deph), type: 'delete', deph,
         }, {
           key, value: dephElement(objectFile2[key], deph), type: 'add', deph,
@@ -43,16 +47,12 @@ const fileDiff = (filePath1, filePath2) => {
         return {
           key, value: dephElement(objectFile1[key], deph), type: 'delete', deph, sort: 'no',
         };
-        // identical keys are the data type that are the object
       }
-      return {
+      return { // identical keys are the data type that are the object
         key, value: genDiffs(objectFile1[key], objectFile2[key], deph + 1), type: null, deph,
       };
     }).flat();
-    const sortElementsAdd = _.sortBy(elementsAdd, (element) => element.key);
-    const sortElementsDeleteRemove = _.sortBy(elementsDeleteRemove, (element) => element.key);
-    const result = [...sortElementsAdd, ...sortElementsDeleteRemove];
-    return _.sortBy(result, (element) => element.key);
+    return sort(elementsAdd, elementsDeleteRemove);
   };
   return genDiffs(parseFile1, parseFile2);
 };
