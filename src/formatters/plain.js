@@ -43,10 +43,8 @@ const buildString = (structure) => {
       return `Property '${path}' was removed`;
     } if (type === 'add') {
       return `Property '${path}' was added with value: ${constructionValue(value)}`;
-    } if (type === 'updated') {
-      return `Property '${path}' was updated. From ${constructionValue(value.delete)} to ${constructionValue(value.add)}`;
     }
-    return null;
+    return `Property '${path}' was updated. From ${constructionValue(value.delete)} to ${constructionValue(value.add)}`;
   });
   return `${result.join('\n')}`;
 };
